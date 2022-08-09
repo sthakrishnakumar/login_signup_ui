@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup_ui/auth/screens/signup_page.dart';
 import 'package:login_signup_ui/commons/form_field_widget.dart';
 import 'package:login_signup_ui/commons/mixins.dart';
 import 'package:login_signup_ui/commons/navigation_widget.dart';
