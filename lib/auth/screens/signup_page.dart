@@ -87,13 +87,10 @@ class _SignUpPageState extends State<SignUpPage> with ValidationMixin {
                       isCapital: true,
                       hintText: 'First Name',
                       validator: (name) {
-                        if (isNameValid(name!)) {
-                          return null;
-                        } else {
-                          return 'First Name can\'t be empty';
-                        }
+                        return isNameValid(name!)
+                            ? null
+                            : 'First Name can\'t be empty';
                       },
-                      suffixIcon: const Text(''),
                     ),
                   ),
                   const SizedBox(
@@ -106,13 +103,10 @@ class _SignUpPageState extends State<SignUpPage> with ValidationMixin {
                       isCapital: true,
                       hintText: 'Last Name',
                       validator: (name) {
-                        if (isNameValid(name!)) {
-                          return null;
-                        } else {
-                          return 'Name can\'t be empty';
-                        }
+                        return isNameValid(name!)
+                            ? null
+                            : 'Name can\'t be empty';
                       },
-                      suffixIcon: const Text(''),
                     ),
                   ),
                   const SizedBox(
@@ -126,13 +120,10 @@ class _SignUpPageState extends State<SignUpPage> with ValidationMixin {
                       controller: contactController,
                       hintText: 'Contact',
                       validator: (phone) {
-                        if (isPhoneValid(phone!)) {
-                          return null;
-                        } else {
-                          return 'Enter Valid Number';
-                        }
+                        return isPhoneValid(phone!)
+                            ? null
+                            : 'Enter Valid Number';
                       },
-                      suffixIcon: const Text(''),
                     ),
                   ),
                   const SizedBox(
@@ -144,12 +135,10 @@ class _SignUpPageState extends State<SignUpPage> with ValidationMixin {
                       inputAction: TextInputAction.next,
                       isCapital: true,
                       hintText: 'Address',
-                      validator: (name) {
-                        if (isNameValid(name!)) {
-                          return null;
-                        } else {
-                          return 'Address can\'t be empty';
-                        }
+                      validator: (address) {
+                        return isNameValid(address!)
+                            ? null
+                            : 'Address can\'t be empty';
                       },
                       suffixIcon: const Text(''),
                     ),
@@ -162,19 +151,7 @@ class _SignUpPageState extends State<SignUpPage> with ValidationMixin {
                       controller: emailController,
                       inputAction: TextInputAction.next,
                       hintText: 'Email',
-                      validator: (email) {
-                        if (isEmailValid(email!)) {
-                          setState(() {
-                            validEmail = true;
-                          });
-                          return null;
-                        } else {
-                          setState(() {
-                            validEmail = false;
-                          });
-                          return 'Enter Valid Email';
-                        }
-                      },
+                      validator: (email) => validateEmail(email),
                       suffixIcon:
                           validEmail ? const Icon(Icons.check) : const Text(''),
                     ),
@@ -189,11 +166,9 @@ class _SignUpPageState extends State<SignUpPage> with ValidationMixin {
                       inputAction: TextInputAction.go,
                       hintText: 'Password',
                       validator: (password) {
-                        if (isPasswordValid(password!)) {
-                          return null;
-                        } else {
-                          return 'Enter Valid Password';
-                        }
+                        return isPasswordValid(password!)
+                            ? null
+                            : 'Enter Valid Password';
                       },
                       suffixIcon: InkWell(
                         onTap: () {
@@ -329,5 +304,19 @@ class _SignUpPageState extends State<SignUpPage> with ValidationMixin {
         ],
       ),
     );
+  }
+
+  validateEmail(email) {
+    if (isEmailValid(email!)) {
+      setState(() {
+        validEmail = true;
+      });
+      return null;
+    } else {
+      setState(() {
+        validEmail = false;
+      });
+      return 'Enter Valid Email';
+    }
   }
 }

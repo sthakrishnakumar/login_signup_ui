@@ -56,6 +56,20 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
     );
   }
 
+  validateEmail(email) {
+    if (isEmailValid(email!)) {
+      setState(() {
+        validEmail = true;
+      });
+      return null;
+    } else {
+      setState(() {
+        validEmail = false;
+      });
+      return 'Enter Valid Email';
+    }
+  }
+
   Padding buildLoginPage() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -92,19 +106,7 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
                 controller: emailController,
                 inputAction: TextInputAction.next,
                 hintText: 'Email',
-                validator: (email) {
-                  if (isEmailValid(email!)) {
-                    setState(() {
-                      validEmail = true;
-                    });
-                    return null;
-                  } else {
-                    setState(() {
-                      validEmail = false;
-                    });
-                    return 'Enter Valid Email';
-                  }
-                },
+                validator: (email) => validateEmail(email),
                 suffixIcon:
                     validEmail ? const Icon(Icons.check) : const Text(''),
               ),
@@ -118,11 +120,9 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
                 controller: passwordController,
                 hintText: 'Password',
                 validator: (password) {
-                  if (isPasswordValid(password!)) {
-                    return null;
-                  } else {
-                    return 'Enter Valid Password';
-                  }
+                  return isPasswordValid(password!)
+                      ? null
+                      : 'Enter Valid Password';
                 },
                 suffixIcon: InkWell(
                   onTap: () {
