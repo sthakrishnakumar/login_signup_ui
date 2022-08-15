@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:login_signup_ui/auth/screens/signup_page.dart';
 import 'package:login_signup_ui/commons/form_field_widget.dart';
 import 'package:login_signup_ui/commons/mixins.dart';
-import 'package:login_signup_ui/commons/navigation_widget.dart';
+import 'package:login_signup_ui/commons/widgets.dart';
 import 'package:login_signup_ui/core/app_constant.dart';
 
 class LoginPage extends StatefulWidget with ValidationMixin {
@@ -14,14 +14,28 @@ class LoginPage extends StatefulWidget with ValidationMixin {
 }
 
 class _LoginPageState extends State<LoginPage> with ValidationMixin {
-  TextEditingController emailController = TextEditingController();
+  late TextEditingController emailController;
 
-  TextEditingController passwordController = TextEditingController();
+  late TextEditingController passwordController;
 
   GlobalKey<FormState> loginKey = GlobalKey<FormState>();
 
   bool passwordVisible = false;
   bool validEmail = false;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +56,18 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
     );
   }
 
-  void keyboardDismiss(BuildContext context) {
-    return FocusScope.of(context).unfocus();
+  validateEmail(email) {
+    if (isEmailValid(email!)) {
+      setState(() {
+        validEmail = true;
+      });
+      return null;
+    } else {
+      setState(() {
+        validEmail = false;
+      });
+      return 'Enter Valid Email';
+    }
   }
 
   Padding buildLoginPage() {
@@ -82,19 +106,7 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
                 controller: emailController,
                 inputAction: TextInputAction.next,
                 hintText: 'Email',
-                validator: (email) {
-                  if (isEmailValid(email!)) {
-                    setState(() {
-                      validEmail = true;
-                    });
-                    return null;
-                  } else {
-                    setState(() {
-                      validEmail = false;
-                    });
-                    return 'Enter Valid Email';
-                  }
-                },
+                validator: (email) => validateEmail(email),
                 suffixIcon:
                     validEmail ? const Icon(Icons.check) : const Text(''),
               ),
@@ -108,11 +120,9 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
                 controller: passwordController,
                 hintText: 'Password',
                 validator: (password) {
-                  if (isPasswordValid(password!)) {
-                    return null;
-                  } else {
-                    return 'Enter Valid Password';
-                  }
+                  return isPasswordValid(password!)
+                      ? null
+                      : 'Enter Valid Password';
                 },
                 suffixIcon: InkWell(
                   onTap: () {

@@ -6,3 +6,7 @@ normalNavigation(BuildContext context, Widget widget) =>
         builder: (context) => widget,
       ),
     );
+
+void keyboardDismiss(BuildContext context) {
+  return FocusScope.of(context).unfocus();
+}

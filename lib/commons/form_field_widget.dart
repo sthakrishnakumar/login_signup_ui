@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 
 import 'package:login_signup_ui/commons/mixins.dart';
@@ -9,7 +10,7 @@ class FormFieldWidget extends StatefulWidget {
     required this.controller,
     this.validator,
     required this.hintText,
-    this.suffixIcon,
+    this.suffixIcon = const Text(''),
     this.obscureText = false,
     this.maxLength = 50,
     this.keyboardType = TextInputType.emailAddress,
